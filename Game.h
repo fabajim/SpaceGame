@@ -1,13 +1,17 @@
 #pragma once
-#include<SFML/Graphics.hpp>
-#include<SFML/System.hpp>
+#include "player.h"
 
 class Game
 {
 private:
 	sf::RenderWindow* window;
 
+	//player
+	Player* player;
+
 	void initWindow();
+	void initPlayer();
+
 public:
 	Game();
 	virtual ~Game();
