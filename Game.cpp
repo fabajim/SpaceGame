@@ -16,12 +16,32 @@ void Game::initPlayer()
 void Game::initVars()
 {
 	this->mouseHeld = false;
+	this->enemySpawnTime = 700.f;
+	this->starSpawnMax = 8.f;
+	this->starSpawnTimer = this->starSpawnMax;
+	this->maxStars = 18;
 }
 
 void Game::initTextures()
 {
+	this->textures["STARS"] = new sf::Texture();
+	this->textures["STARS"]->loadFromFile("Textures/Stars.png");
+
 	this->textures["LASER"] = new sf::Texture();
 	this->textures["LASER"]->loadFromFile("Textures/Laser.png");
+
+	this->textures["ENEMY"] = new sf::Texture();
+	this->textures["ENEMY"]->loadFromFile("Textures/Enemy.png");
+}
+
+void Game::initEnemy()
+{
+	this->enemy.push_back(new Enemy(this->textures["ENEMY"]));
+}
+
+void Game::initStar()
+{
+	this->stars.push_back(new Stars(this->textures["STARS"]));
 }
 
 // Public Functions
@@ -46,6 +66,18 @@ Game::~Game()
 
 	//delets lasers
 	for (auto* i : this->laser)
+	{
+		delete i;
+	}
+
+	//delete enemy
+	for (auto* i : this->enemy)
+	{
+		delete i;
+	}
+
+	//delete star
+	for (auto* i : this->stars)
 	{
 		delete i;
 	}
@@ -123,12 +155,70 @@ void Game::laserUpdate()
 	}
 }
 
+void Game::enemyUpdate()
+{
+	if (this->enemySpawnTime == 700.f)
+	{
+		this->initEnemy();
+		this->enemySpawnTime = 0.f;
+	}
+	this->enemySpawnTime += 1.f;
+
+	unsigned counter = 0;//used as an iterator
+	for (auto* enemies : this->enemy)
+	{
+		enemies->move();
+
+		//enemy deleted if out of bounds
+		if (enemies->getBounds().left + enemies->getBounds().width < 0) 
+		{
+			delete this->enemy.at(counter);
+			this->enemy.erase(this->enemy.begin() + counter);
+			--counter;
+			//subtractPoints();
+		}
+		++counter;
+	}
+}
+
+void Game::starUpdate()
+{
+	// spawn stars
+	if (this->stars.size() < this->maxStars)
+	{
+		if (this->starSpawnTimer >= this->starSpawnMax)
+		{
+			this->initStar();
+			this->starSpawnTimer = 0.f;
+		} 
+		else
+		{
+			this->starSpawnTimer += 1.f;
+		}
+	}
+	// Move Stars
+	unsigned counter = 0;
+	for (auto* star : this->stars)
+	{
+		star->moveStar();
+		if (star->getBounds().left + star->getBounds().width < 0)
+		{
+			delete this->stars.at(counter);
+			this->stars.erase(this->stars.begin() + counter);
+			--counter;
+		}
+		++counter;
+	}
+}
+
 void Game::update()
 {
 	this->eventUpdate();
 	this->playerUpdate();
 	this->player->update();
 	this->laserUpdate();
+	this->enemyUpdate();
+	this->starUpdate();
 }
 
 void Game::render()
@@ -142,6 +232,18 @@ void Game::render()
 	for (auto* lasers : this->laser)
 	{
 		lasers->render(this->window);
+	}
+
+	//render enemy
+	for (auto* enemies : this->enemy)
+	{
+		enemies->render(this->window);
+	}
+
+	// rebder stars
+	for (auto* star : this->stars)
+	{
+		star->render(this->window);
 	}
 
 	this->window->display();

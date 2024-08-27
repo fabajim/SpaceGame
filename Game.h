@@ -7,6 +7,8 @@
 #include<iostream>
 #include"Player.h"
 #include"Laser.h"
+#include"Enemy.h"
+#include"Stars.h"
 
 class Game
 {
@@ -21,12 +23,24 @@ private:
 	// lasers
 	std::vector<Laser*> laser;
 
+	//Enemy
+	std::vector<Enemy*> enemy;
+
+	//Stars
+	std::vector<Stars*> stars;
+
 	void initWindow();
 	void initPlayer();
 	void initVars();
 	void initTextures();
+	void initEnemy();
+	void initStar();
 
-	bool mouseHeld;
+	bool mouseHeld; // keep laser from fireing in one continous line
+	float enemySpawnTime;
+	float starSpawnMax;
+	float starSpawnTimer;
+	int maxStars;
 
 public:
 	Game();
@@ -37,6 +51,8 @@ public:
 	void eventUpdate();
 	void playerUpdate();
 	void laserUpdate();
+	void enemyUpdate();
+	void starUpdate();
 	void update();
 	void render();
 
