@@ -4,7 +4,6 @@
 #include<SFML/System.hpp>
 #include<iostream>
 
-
 class Player
 {
 private:
@@ -13,16 +12,28 @@ private:
 
 	float movementSpeed;
 
+	float laserCooldown;
+	float laserCooldownMax;
+
+	//Private Methods
+	void initVariables();
 	void initTexture();
 	void initSprite();
-	void initVariables();
 
 public:
 	Player();
 	virtual ~Player();
 
-	void move(const float X, const float Y);
+	//Accessors
+	const sf::Vector2f& getPos() const;
+	const sf::FloatRect getBounds() const;
 
+
+	//Player Methods
+	void move(const float dirX, const float dirY);
+	const bool canFireLaser();
+
+	void updateLaser();
 	void update();
 	void render(sf::RenderTarget& target);
 };
