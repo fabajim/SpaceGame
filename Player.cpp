@@ -26,7 +26,7 @@ void Player::initSprite()
 	//set texture to the sprite
 	//sets the sprite on the window
 	this->sprite.setTexture(this->texture);
-	//this->sprite.setRotation(90.f);
+	this->sprite.setPosition(100.f, 250.f);
 }
 
 //Player Constructor

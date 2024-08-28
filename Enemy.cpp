@@ -3,7 +3,7 @@
 Enemy::Enemy(sf::Texture* texture)
 {
 	//sets position y at a random location when object is crated
-	this->posY = static_cast<float>(rand() % 585);
+	this->posY = static_cast<float>(rand() % 500);
 	this->shape.setTexture(*texture);
 	this->shape.setPosition(799.f, posY);
 	this->movementSpeed = -1.5f;

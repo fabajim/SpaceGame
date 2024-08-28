@@ -4,7 +4,7 @@
 void Game::initWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Earth Defender", sf::Style::Close | sf::Style::Titlebar);
-	this->window->setFramerateLimit(144);
+	this->window->setFramerateLimit(120);
 	this->window->setVerticalSyncEnabled(false);
 }
 
@@ -162,6 +162,27 @@ void Game::laserUpdate()
 			this->laser.erase(this->laser.begin() + counter);
 			--counter;
 		}
+		else
+		{
+			// Hitting an enemy
+			unsigned enemyCount = 0;
+			for (auto *enemies : this->enemy)
+			{
+				if (lasers->getBounds().intersects(enemies->getBounds()))
+				{
+					delete this->enemy.at(enemyCount);
+					this->enemy.erase(this->enemy.begin() + enemyCount);
+					this->points++;
+
+					//delete laser
+					delete this->laser.at(counter);
+					this->laser.erase(this->laser.begin() + counter);
+
+					--enemyCount;
+				}
+				++enemyCount;
+			}
+		}
 		++counter;
 	}
 }
@@ -186,6 +207,10 @@ void Game::enemyUpdate()
 			delete this->enemy.at(counter);
 			this->enemy.erase(this->enemy.begin() + counter);
 			--counter;
+			this->subtractPoints();
+		}
+		else if (enemies->getBounds().intersects(player->getBounds()))
+		{
 			this->subtractPoints();
 		}
 		++counter;
