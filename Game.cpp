@@ -20,6 +20,7 @@ void Game::initVars()
 	this->starSpawnMax = 8.f;
 	this->starSpawnTimer = this->starSpawnMax;
 	this->maxStars = 18;
+	this->points = 0;
 }
 
 void Game::initTextures()
@@ -42,6 +43,16 @@ void Game::initEnemy()
 void Game::initStar()
 {
 	this->stars.push_back(new Stars(this->textures["STARS"]));
+}
+
+void Game::subtractPoints()
+{
+	this->points--;
+	if (this->points < 0)
+	{
+		this->window->close();
+		std::cout << "Game over!\n";
+	}
 }
 
 // Public Functions
@@ -175,7 +186,7 @@ void Game::enemyUpdate()
 			delete this->enemy.at(counter);
 			this->enemy.erase(this->enemy.begin() + counter);
 			--counter;
-			//subtractPoints();
+			this->subtractPoints();
 		}
 		++counter;
 	}
