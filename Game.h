@@ -16,6 +16,8 @@ private:
 	sf::RenderWindow* window;
 
 	std::map<std::string, sf::Texture*> textures; //for each string there will be a texture.
+	sf::Font font;
+	sf::Text gameText;
 
 	//player
 	Player* player;
@@ -30,6 +32,7 @@ private:
 	std::vector<Stars*> stars;
 
 	void initWindow();
+	void initText();
 	void initPlayer();
 	void initVars();
 	void initTextures();
@@ -56,7 +59,10 @@ public:
 	void laserUpdate();
 	void enemyUpdate();
 	void starUpdate();
+	void textUpdate();
 	void update();
+
+	void renderText(sf::RenderTarget& target);
 	void render();
 
 

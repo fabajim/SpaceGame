@@ -8,6 +8,14 @@ void Game::initWindow()
 	this->window->setVerticalSyncEnabled(false);
 }
 
+void Game::initText()
+{
+	this->gameText.setFont(this->font);
+	this->gameText.setCharacterSize(20);
+	this->gameText.setFillColor(sf::Color::White);
+	this->gameText.setString("NONE");
+}
+
 void Game::initPlayer()
 {
 	this->player = new Player();
@@ -33,6 +41,9 @@ void Game::initTextures()
 
 	this->textures["ENEMY"] = new sf::Texture();
 	this->textures["ENEMY"]->loadFromFile("Textures/Enemy.png");
+
+	if (!this->font.loadFromFile("roman_sd/Roman.ttf"))
+		std::cout << "ERROR::GAME::INITTEXTURES::FAILD TO LOAD FONT\n";
 }
 
 void Game::initEnemy()
@@ -47,7 +58,7 @@ void Game::initStar()
 
 void Game::subtractPoints()
 {
-	this->points--;
+	this->points -= 2;
 	if (this->points < 0)
 	{
 		this->window->close();
@@ -60,8 +71,9 @@ Game::Game()
 {
 	this->initVars();
 	this->initWindow();
-	this->initPlayer();
 	this->initTextures();
+	this->initText();
+	this->initPlayer();
 }
 
 Game::~Game()
@@ -247,9 +259,20 @@ void Game::starUpdate()
 	}
 }
 
+void Game::textUpdate()
+{
+	//display score and enemies escaped
+	std::stringstream ss;
+
+	ss << "Points: " << this->points << '\n';
+
+	this->gameText.setString(ss.str());
+}
+
 void Game::update()
 {
 	this->eventUpdate();
+	this->textUpdate();
 	this->playerUpdate();
 	this->player->update();
 	this->laserUpdate();
@@ -257,9 +280,16 @@ void Game::update()
 	this->starUpdate();
 }
 
+void Game::renderText(sf::RenderTarget &target)
+{
+	target.draw(this->gameText);
+}
+
 void Game::render()
 {
 	this->window->clear();
+
+	this->renderText(*this->window);
 
 	//Draw on the window
 	this->player->render(*this->window);
