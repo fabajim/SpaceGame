@@ -84,7 +84,7 @@ void Game::updatePoints()
 void Game::updateEnemySpeed(float speed)
 {
 	this->enemySpeed += speed;
-	std::cout << "Enemy Speed " << enemySpeed << std::endl;
+	// std::cout << "Enemy Speed " << enemySpeed << std::endl; debugging
 }
 
 void Game::updateEnemySpawnTime(float time)
@@ -94,7 +94,7 @@ void Game::updateEnemySpawnTime(float time)
 		this->enemySpawnTimeMax += time;
 
 	}
-	std::cout << "Enemy Spawn Time " << enemySpawnTimeMax << std::endl;
+	// std::cout << "Enemy Spawn Time " << enemySpawnTimeMax << std::endl; debugging
 }
 
 // Public Functions
