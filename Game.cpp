@@ -24,7 +24,9 @@ void Game::initPlayer()
 void Game::initVars()
 {
 	this->mouseHeld = false;
-	this->enemySpawnTime = 700.f;
+	this->enemySpawnTimeMax = 700.f;
+	this->enemySpawnTime = this->enemySpawnTimeMax;
+	this->enemySpeed = -1.5f;
 	this->starSpawnMax = 8.f;
 	this->starSpawnTimer = this->starSpawnMax;
 	this->maxStars = 18;
@@ -48,7 +50,7 @@ void Game::initTextures()
 
 void Game::initEnemy()
 {
-	this->enemy.push_back(new Enemy(this->textures["ENEMY"]));
+	this->enemy.push_back(new Enemy(this->textures["ENEMY"], this->enemySpeed));
 }
 
 void Game::initStar()
@@ -64,6 +66,35 @@ void Game::subtractPoints()
 		this->window->close();
 		std::cout << "Game over!\n";
 	}
+}
+
+void Game::updatePoints()
+{
+	this->points++;
+	if (this->points % 2 == 0)
+	{
+		this->updateEnemySpeed(-0.2f);
+	}
+	if (this->points % 5 == 0)
+	{
+		this->updateEnemySpawnTime(-50.f);
+	}
+}
+
+void Game::updateEnemySpeed(float speed)
+{
+	this->enemySpeed += speed;
+	std::cout << "Enemy Speed " << enemySpeed << std::endl;
+}
+
+void Game::updateEnemySpawnTime(float time)
+{
+	if (this->enemySpawnTimeMax > 0)
+	{
+		this->enemySpawnTimeMax += time;
+
+	}
+	std::cout << "Enemy Spawn Time " << enemySpawnTimeMax << std::endl;
 }
 
 // Public Functions
@@ -184,7 +215,7 @@ void Game::laserUpdate()
 				{
 					delete this->enemy.at(enemyCount);
 					this->enemy.erase(this->enemy.begin() + enemyCount);
-					this->points++;
+					this->updatePoints();
 
 					//delete laser
 					delete this->laser.at(counter);
@@ -201,7 +232,7 @@ void Game::laserUpdate()
 
 void Game::enemyUpdate()
 {
-	if (this->enemySpawnTime == 700.f)
+	if (this->enemySpawnTime == this->enemySpawnTimeMax)
 	{
 		this->initEnemy();
 		this->enemySpawnTime = 0.f;

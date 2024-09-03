@@ -40,9 +40,14 @@ private:
 	void initStar();
 
 	void subtractPoints();
+	void updatePoints();
+	void updateEnemySpeed(float speed);
+	void updateEnemySpawnTime(float time);
 
 	bool mouseHeld; // keep laser from fireing in one continous line
+	float enemySpawnTimeMax;
 	float enemySpawnTime;
+	float enemySpeed;
 	float starSpawnMax;
 	float starSpawnTimer;
 	int maxStars;

@@ -17,7 +17,7 @@ private:
 
 
 public:
-	Enemy(sf::Texture* texture);
+	Enemy(sf::Texture* texture, float speed);
 	virtual ~Enemy();
 
 	float movementSpeed;
