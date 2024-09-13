@@ -2,6 +2,7 @@
 #include<vector>
 #include<ctime>
 #include<sstream>
+#include<fstream>
 
 #include<map>
 #include<iostream>
@@ -57,7 +58,7 @@ public:
 	Game();
 	virtual ~Game();
 
-	void run();
+	int run();
 	//update and render the window
 	void eventUpdate();
 	void playerUpdate();

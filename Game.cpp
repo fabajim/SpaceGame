@@ -50,6 +50,7 @@ void Game::initTextures()
 
 void Game::initEnemy()
 {
+	//sf::FloatRect rect = { 80.f,100.f,80.f,80.f };
 	this->enemy.push_back(new Enemy(this->textures["ENEMY"], this->enemySpeed));
 }
 
@@ -137,14 +138,14 @@ Game::~Game()
 	}
 }
 
-void Game::run()
+int Game::run()
 {
 	while (this->window->isOpen())
 	{
 		this->update();
 		this->render();
 	}
-
+	return this->points;
 }
 
 void Game::eventUpdate()
@@ -241,7 +242,7 @@ void Game::enemyUpdate()
 
 	unsigned counter = 0;//used as an iterator
 	for (auto* enemies : this->enemy)
-	{
+	{	
 		enemies->move();
 
 		//enemy deleted if out of bounds
