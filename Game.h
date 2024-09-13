@@ -53,6 +53,7 @@ private:
 	float starSpawnTimer;
 	int maxStars;
 	int points;
+	int maxPoints;
 
 public:
 	Game();

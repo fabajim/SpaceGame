@@ -31,6 +31,7 @@ void Game::initVars()
 	this->starSpawnTimer = this->starSpawnMax;
 	this->maxStars = 18;
 	this->points = 0;
+	this->maxPoints = this->points;
 }
 
 void Game::initTextures()
@@ -72,6 +73,7 @@ void Game::subtractPoints()
 void Game::updatePoints()
 {
 	this->points++;
+	this->maxPoints = points;
 	if (this->points % 2 == 0)
 	{
 		this->updateEnemySpeed(-0.2f);
@@ -145,7 +147,7 @@ int Game::run()
 		this->update();
 		this->render();
 	}
-	return this->points;
+	return this->maxPoints;
 }
 
 void Game::eventUpdate()
